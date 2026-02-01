@@ -345,6 +345,56 @@ if old_path and new_path and Path(old_path).exists() and Path(new_path).exists()
             st.subheader(f"Details comparison — {LABEL_OLD} vs {LABEL_NEW} (by Indication × Type)")
             comp_display = comp_details.fillna(0).reset_index()
 
+            # Details pie charts: total patients per indication (Old vs New)
+            old_cols_d = [c for c in comp_display.columns if str(c).endswith("_old") and pd.api.types.is_numeric_dtype(comp_display[c])]
+            new_cols_d = [c for c in comp_display.columns if str(c).endswith("_new") and pd.api.types.is_numeric_dtype(comp_display[c])]
+            total_old_d = next((c for c in old_cols_d if "Total" in str(c)), old_cols_d[0] if old_cols_d else None)
+            total_new_d = next((c for c in new_cols_d if "Total" in str(c)), new_cols_d[0] if new_cols_d else None)
+            if total_old_d and total_new_d and "Indication" in comp_display.columns:
+                ind_totals = comp_display.groupby("Indication", as_index=False).agg({total_old_d: "sum", total_new_d: "sum"})
+                ind_totals = ind_totals[ind_totals[total_old_d].fillna(0) + ind_totals[total_new_d].fillna(0) > 0]
+                if not ind_totals.empty:
+                    labels_ind = [str(x)[:20] for x in ind_totals["Indication"].tolist()]
+                    colors_ind = [PIE_PALETTE[i % len(PIE_PALETTE)] for i in range(len(labels_ind))]
+                    fig_pie_d_old = go.Figure(go.Pie(
+                        labels=labels_ind,
+                        values=ind_totals[total_old_d].fillna(0).values,
+                        hole=0.45,
+                        textinfo="label+percent",
+                        textposition="outside",
+                        textfont=PIE_TEXTFONT,
+                        hovertemplate="%{label}<br>Patients: %{value:,.0f}<br>Share: %{percent}<extra></extra>",
+                        marker=dict(colors=colors_ind, line=PIE_MARKER_LINE),
+                    ))
+                    fig_pie_d_old.update_layout(
+                        **PLOTLY_LAYOUT_PIE,
+                        title=dict(text=f"{LABEL_OLD} — Indication share", font=CHART_TITLE_FONT, pad=PIE_TITLE_PAD),
+                        height=400,
+                        showlegend=True,
+                    )
+                    fig_pie_d_new = go.Figure(go.Pie(
+                        labels=labels_ind,
+                        values=ind_totals[total_new_d].fillna(0).values,
+                        hole=0.45,
+                        textinfo="label+percent",
+                        textposition="outside",
+                        textfont=PIE_TEXTFONT,
+                        hovertemplate="%{label}<br>Patients: %{value:,.0f}<br>Share: %{percent}<extra></extra>",
+                        marker=dict(colors=colors_ind, line=PIE_MARKER_LINE),
+                    ))
+                    fig_pie_d_new.update_layout(
+                        **PLOTLY_LAYOUT_PIE,
+                        title=dict(text=f"{LABEL_NEW} — Indication share", font=CHART_TITLE_FONT, pad=PIE_TITLE_PAD),
+                        height=400,
+                        showlegend=True,
+                    )
+                    st.subheader("Details — charts")
+                    pie_d_c1, pie_d_c2 = st.columns(2)
+                    with pie_d_c1:
+                        st.plotly_chart(fig_pie_d_old, use_container_width=True, key="details_pie_old")
+                    with pie_d_c2:
+                        st.plotly_chart(fig_pie_d_new, use_container_width=True, key="details_pie_new")
+
             # Data table
             st.subheader("Details — data table")
             numeric_cols_d = [c for c in comp_display.columns if c not in ("Indication", "Type") and pd.api.types.is_numeric_dtype(comp_display[c])]
