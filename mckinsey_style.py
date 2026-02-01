@@ -130,9 +130,24 @@ STREAMLIT_CSS_LIGHT = """
         background-color: #1a365d !important;
         color: #ffffff !important;
     }
-    /* Buttons (download, theme) — keep text blue */
+    /* Buttons (download, etc.) — keep text blue */
     .stApp button, .stApp button span, .stApp button label {
         color: #1a365d !important;
+    }
+    /* Theme toggle button: white text on dark background */
+    div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:last-child button,
+    div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:last-child button span,
+    div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:last-child button label {
+        color: #ffffff !important;
+        background-color: #1a365d !important;
+    }
+    /* Streamlit header menu (Deploy, Rerun, File change, Datasource) — white text */
+    [data-testid="stHeader"], [data-testid="stHeader"] *,
+    [data-testid="stToolbar"], [data-testid="stToolbar"] *,
+    header, header *,
+    [data-testid="stMainMenu"], [data-testid="stMainMenu"] *,
+    [data-testid="stStatusWidget"], [data-testid="stStatusWidget"] * {
+        color: #ffffff !important;
     }
     .stMetric {
         background: #f7fafc;
@@ -205,6 +220,16 @@ STREAMLIT_CSS_DARK = """
         color: #ffffff !important;
     }
     .stApp button, .stApp button span, .stApp button label {
+        color: #ffffff !important;
+    }
+    /* Theme toggle + Streamlit menu (Dark, Deploy, Rerun, File change, Datasource) — white */
+    div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:last-child button,
+    div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:last-child button span,
+    [data-testid="stHeader"], [data-testid="stHeader"] *,
+    [data-testid="stToolbar"], [data-testid="stToolbar"] *,
+    header, header *,
+    [data-testid="stMainMenu"], [data-testid="stMainMenu"] *,
+    [data-testid="stStatusWidget"], [data-testid="stStatusWidget"] * {
         color: #ffffff !important;
     }
     p.stCaptionContainer, .stCaptionContainer p {
