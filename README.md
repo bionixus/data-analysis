@@ -41,20 +41,21 @@ streamlit run medication_calculator.py
 
 Open **http://localhost:8501**. Select a drug, enter monthly consumption and (optionally) consumption per patient per month; the app shows the estimated patient count.
 
-## Live Dashboard (localhost)
+## Live Dashboard (GHD Drug Comparison)
 
 Run the interactive Streamlit dashboard:
 
 ```bash
-pip install streamlit plotly
+pip install -r requirements.txt
 streamlit run app.py
 ```
 
 Then open **http://localhost:8501** in your browser. The dashboard includes:
-- Interactive Plotly charts (zoom, hover, pan)
-- Summary metrics
-- Head-to-head data table
-- Option to upload different Excel files in the sidebar
+- **Demo (sample data)** — bundled sample Excel files so the app works out of the box and on [Streamlit Community Cloud](https://share.streamlit.io)
+- Other hospitals (e.g. American Hospital) — use your local Excel paths or **Custom upload** in the sidebar
+- Interactive Plotly charts (zoom, hover, pan), summary metrics, head-to-head data table, Overview + Details tabs
+
+**Deploy on Streamlit Community Cloud:** Push this repo to GitHub, then at [share.streamlit.io](https://share.streamlit.io) create a new app from the repo with **Main file path:** `app.py`. The default **Demo (sample data)** option uses files in `sample_data/` so the deployed app has data without local files.
 
 ## Setup
 

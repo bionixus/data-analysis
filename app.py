@@ -32,8 +32,18 @@ from mckinsey_style import (
     FONT_SIZE_BODY,
 )
 
-# Hospital config: one entry per hospital (Old vs New data). Add more hospitals here.
+# Path to sample data (bundled in repo for Streamlit Cloud / when local files are missing)
+_SAMPLE_DIR = Path(__file__).resolve().parent / "sample_data"
+_SAMPLE_OLD = _SAMPLE_DIR / "old.xlsx"
+_SAMPLE_NEW = _SAMPLE_DIR / "new.xlsx"
+
+# Hospital config: one entry per hospital (Old vs New data). Demo first so deployed app has data.
 HOSPITALS = [
+    {
+        "name": "Demo (sample data)",
+        "old_path": str(_SAMPLE_OLD),
+        "new_path": str(_SAMPLE_NEW),
+    },
     {
         "name": "American Hospital",
         "old_path": "/Users/selim/Documents/BioNixus Market Research Reports/GHD /Updated Old American.xlsx",
